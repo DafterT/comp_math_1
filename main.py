@@ -11,11 +11,6 @@ from scipy.integrate import quad
 from scipy.interpolate import lagrange, CubicSpline
 
 
-def parody_quanc8(func):
-    integral = quad(func, 2, 5, limit=30)
-    return integral
-
-
 def interpolation():
     # Заполнили массив узлов интерполяции
     x_interpolation = np.arange(0, 1 + 0.1, 0.1)
@@ -32,8 +27,33 @@ def interpolation():
     print(y_lagrange - y_real, '\n', y_spline - y_real)
 
 
+def pseudo_quanc8(func, start, end):
+    return quad(func, start, end, limit=30)
+
+
+def get_integrate_function(m):
+    def integrate_function(x):
+        return (np.abs(x - np.tan(x))) ** m
+
+    return integrate_function
+
+
+def do_integrate(m, approximation):
+    inconvenient_point = 4.49340945790906
+    function = get_integrate_function(m)
+    integral = pseudo_quanc8(function, 2, inconvenient_point - approximation) + \
+               pseudo_quanc8(function, inconvenient_point + approximation, 5)
+    return integral[0]
+
+
+def integration():
+    print(do_integrate(-1.0, 2e-9))
+    print(do_integrate(-0.5, 1e-6))
+
+
 def main():
     interpolation()
+    integration()
 
 
 if __name__ == '__main__':
