@@ -9,6 +9,16 @@
 import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import lagrange, CubicSpline
+from prettytable import PrettyTable
+
+
+def print_interpolation(x_find, y_real, y_lagrange, y_spline):
+    pt = PrettyTable()
+    pt.add_column('x', np.round(x_find, 4))
+    pt.add_column('real y', y_real)
+    pt.add_column('lagrange y', y_lagrange)
+    pt.add_column('spline y', y_spline)
+    print(pt)
 
 
 def interpolation():
@@ -24,7 +34,7 @@ def interpolation():
     # Строим сплайн интерполяцию
     spline_interpolation = CubicSpline(x_interpolation, y_interpolation)
     y_spline = spline_interpolation(x_find)
-    print(y_lagrange - y_real, '\n', y_spline - y_real)
+    print_interpolation(x_find, y_real, y_lagrange, y_spline)
 
 
 def pseudo_quanc8(func, start, end):
