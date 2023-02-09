@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 
 
+# Функция для отрисовки таблицы
 def print_interpolation_table(x_find, y_real, y_lagrange, y_spline):
     pt = PrettyTable()
     pt.add_column('x', np.round(x_find, 4))
@@ -22,6 +23,7 @@ def print_interpolation_table(x_find, y_real, y_lagrange, y_spline):
     print(pt)
 
 
+# Функция для отрисовки одного графика
 def print_one_graph(x, y, title, id):
     plt.subplot(1, 3, id)
     plt.xlabel('x')
@@ -33,6 +35,7 @@ def print_one_graph(x, y, title, id):
     plt.plot(x, y, '-o')
 
 
+# Функция для отрисовки всех графиков
 def print_interpolation_graph(x_find, y_real, y_lagrange, y_spline):
     plt.figure(figsize=(15, 4))
     print_one_graph(x_find, y_real, 'Исходный график', 1)
@@ -42,6 +45,7 @@ def print_interpolation_graph(x_find, y_real, y_lagrange, y_spline):
     plt.show()
 
 
+# Выполнение задачи интерполяции
 def interpolation():
     # Заполнили массив узлов интерполяции
     x_interpolation = np.arange(0, 1 + 0.1, 0.1)
@@ -60,10 +64,12 @@ def interpolation():
     print_interpolation_graph(x_find, y_real, y_lagrange, y_spline)
 
 
+# Функция, которая используется вместо quanc8
 def pseudo_quanc8(func, start, end):
     return quad(func, start, end, limit=30)
 
 
+# Получение функции интеграла
 def get_integrate_function(m):
     def integrate_function(x):
         return (np.abs(x - np.tan(x))) ** m
@@ -71,6 +77,7 @@ def get_integrate_function(m):
     return integrate_function
 
 
+# Выполнение задачи интегрирования
 def do_integrate(m, approximation):
     inconvenient_point = 4.49340945790906
     function = get_integrate_function(m)
@@ -79,6 +86,7 @@ def do_integrate(m, approximation):
     return integral[0]
 
 
+# Выполнение задачи интегрирования
 def integration():
     print(do_integrate(-1.0, 2e-9))
     print(do_integrate(-0.5, 1e-6))
