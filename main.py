@@ -24,12 +24,10 @@ def print_interpolation_table(x_find, y_real, y_lagrange, y_spline):
 
 
 # Функция для отрисовки одного графика
-def print_one_graph(x, y, title, id):
-    plt.subplot(1, 3, id)
+def print_one_graph(x, y, title, id, count_graphs):
+    plt.subplot(1, count_graphs, id)
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.xlim(0, 1)
-    plt.ylim(0.5, 1.0)
     plt.grid()
     plt.title(title)
     plt.plot(x, y, '-o')
@@ -38,10 +36,25 @@ def print_one_graph(x, y, title, id):
 # Функция для отрисовки всех графиков
 def print_interpolation_graph(x_find, y_real, y_lagrange, y_spline):
     plt.figure(figsize=(15, 4))
-    print_one_graph(x_find, y_real, 'Исходный график', 1)
-    print_one_graph(x_find, y_lagrange, 'График Лагранжем', 2)
-    print_one_graph(x_find, y_spline, 'График сплайном', 3)
-    plt.savefig("image.jpg")
+    print_one_graph(x_find, y_real, 'Исходный график', 1, 3)
+    print_one_graph(x_find, y_lagrange, 'График Лагранжем', 2, 3)
+    print_one_graph(x_find, y_spline, 'График сплайном', 3, 3)
+    plt.savefig("Graphs.jpg")
+    plt.show()
+
+
+# Функция для отрисовки погрешности
+def print_interpolation_error(x_interpolation, x_find, y_lagrange_error, y_spline_error):
+    plt.figure(figsize=(15, 4))
+    # Добавляем узлы т.к. при интерполяции в них погрешность нулевая
+    x = np.arange(0, 1 + 0.05, 0.05)
+    # Добавляем нулевые узлы на график
+    y_lagrange = [0 if i % 2 == 0 else y_lagrange_error[i // 2] for i in range(0, len(x_interpolation) + len(x_find))]
+    y_spline = [0 if i % 2 == 0 else y_spline_error[i // 2] for i in range(0, len(x_interpolation) + len(x_find))]
+    # Собственно сам график
+    print_one_graph(x, y_lagrange, 'Погрешность Лагранжем', 1, 2)
+    print_one_graph(x, y_spline, 'Погрешность сплайном', 2, 2)
+    plt.savefig("Error.jpg")
     plt.show()
 
 
@@ -62,6 +75,7 @@ def interpolation():
     # Отрисовка
     print_interpolation_table(x_find, y_real, y_lagrange, y_spline)
     print_interpolation_graph(x_find, y_real, y_lagrange, y_spline)
+    print_interpolation_error(x_interpolation, x_find, y_lagrange - y_real, y_spline - y_real)
 
 
 # Функция, которая используется вместо quanc8
