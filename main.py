@@ -26,9 +26,11 @@ def print_one_graph(x, y, title, id):
     plt.subplot(1, 3, id)
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.xlim(0, 1)
+    plt.ylim(0.5, 1.0)
     plt.grid()
     plt.title(title)
-    plt.plot(x, y)
+    plt.plot(x, y, '-o')
 
 
 def print_interpolation_graph(x_find, y_real, y_lagrange, y_spline):
@@ -36,7 +38,7 @@ def print_interpolation_graph(x_find, y_real, y_lagrange, y_spline):
     print_one_graph(x_find, y_real, 'Исходный график', 1)
     print_one_graph(x_find, y_lagrange, 'График Лагранжем', 2)
     print_one_graph(x_find, y_spline, 'График сплайном', 3)
-    # plt.savefig("image.jpg")
+    plt.savefig("image.jpg")
     plt.show()
 
 
@@ -53,6 +55,7 @@ def interpolation():
     # Строим сплайн интерполяцию
     spline_interpolation = CubicSpline(x_interpolation, y_interpolation)
     y_spline = spline_interpolation(x_find)
+    # Отрисовка
     print_interpolation_table(x_find, y_real, y_lagrange, y_spline)
     print_interpolation_graph(x_find, y_real, y_lagrange, y_spline)
 
