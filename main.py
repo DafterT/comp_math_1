@@ -102,8 +102,8 @@ def do_integrate(m, approximation):
 
 # Выполнение задачи интегрирования
 def integration():
-    print(do_integrate(-1.0, 2e-9))
-    print(do_integrate(-0.5, 1e-6))
+    print(f'Integral with m=-1: {do_integrate(-1.0, 2e-9)}')
+    print(f'Integral with m=-0.5: {do_integrate(-0.5, 1e-6)}')
 
 
 def main():
