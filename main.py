@@ -92,18 +92,41 @@ def get_integrate_function(m):
 
 
 # Выполнение задачи интегрирования
-def do_integrate(m, approximation):
+def do_integrate(approximation, integrate_function):
     inconvenient_point = 4.49340945790906
-    function = get_integrate_function(m)
-    integral = pseudo_quanc8(function, 2, inconvenient_point - approximation) + \
-               pseudo_quanc8(function, inconvenient_point + approximation, 5)
+    integral = pseudo_quanc8(integrate_function, 2, inconvenient_point - approximation) + \
+               pseudo_quanc8(integrate_function, inconvenient_point + approximation, 5)
     return integral[0]
+
+
+# Функция для подсчета интегралов с различным приближением к бесконечности
+def do_integration_with_various_approximations(approximation_array, m):
+    """Эта функция считает значение интеграла с различным приближением к точке разрыва"""
+    integrate_function = get_integrate_function(m)
+    integration_return = []
+    for i in approximation_array:
+        integration_return.append(do_integrate(i, integrate_function))
+    return integration_return
+
+
+# Нарисовать таблицу с интегрированием
+def print_integration_table(approximation, array_with_m_05, array_with_m_1):
+    pt = PrettyTable()
+    approximation_decimal = [f'{i:.0e}' for i in approximation]
+    pt.add_column('Approximation', approximation_decimal)
+    pt.add_column('Integral, m=-0.5', array_with_m_05)
+    pt.add_column('Integral, m=-1.0', array_with_m_1)
+    print(pt)
 
 
 # Выполнение задачи интегрирования
 def integration():
-    print(f'Integral with m=-1: {do_integrate(-1.0, 2e-9)}')
-    print(f'Integral with m=-0.5: {do_integrate(-0.5, 1e-6)}')
+    approximation_array = [10 ** (-i) for i in range(20)]
+    print_integration_table(
+        approximation_array,
+        do_integration_with_various_approximations(approximation_array, -0.5),
+        do_integration_with_various_approximations(approximation_array, -1.0)
+    )
 
 
 def main():
